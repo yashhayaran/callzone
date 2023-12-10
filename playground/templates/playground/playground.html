@@ -9,7 +9,10 @@
         <form method="post" enctype="multipart/form-data" action="{% url 'playground:upload_file' %}">
             {% csrf_token %}
             <div class="drop-zone">
-                <span class="drop-zone__prompt">Drop audio clip here or click to upload</span>
+                <div class="drop-zone__prompt">
+                    <p>Drop audio clip here</p>
+                    <p>or click to upload</p>
+                </div>
                 {% load widget_tweaks %}
                 {{ form.audio_file | add_class:"drop-zone__input" }}
             </div>

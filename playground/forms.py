@@ -1,9 +1,6 @@
-from dataclasses import fields
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.db.models import FileField
 from django.template.defaultfilters import filesizeformat
+
 from .models import PayloadStatus
 
 
@@ -27,8 +24,6 @@ class ContentTypeRestrictedFileField(forms.FileField):
     def __init__(self, *args, **kwargs):
         self.content_types = kwargs.pop("content_types")
         self.max_upload_size = kwargs.pop("max_upload_size")
-        self.allow_empty_file = kwargs.pop("allow_empty_file")
-        self.allow_empty_file = False
 
         super(ContentTypeRestrictedFileField, self).__init__(*args, **kwargs)
 

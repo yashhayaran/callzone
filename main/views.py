@@ -1,8 +1,7 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.urls import is_valid_path
-from .forms import RegisterForm, LoginForm
 from django.contrib.auth import login, logout, authenticate
+from django.shortcuts import redirect, render
+
+from .forms import RegisterForm, LoginForm
 
 '''
 Home

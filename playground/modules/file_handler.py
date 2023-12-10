@@ -1,10 +1,9 @@
-from django.core.files.uploadedfile import TemporaryUploadedFile, InMemoryUploadedFile, UploadedFile
-
-'''Single place to hold the buffer reference of audio 
-'''
+from django.core.files.uploadedfile import UploadedFile
 
 
 class AudioBufferInMemory:
+    """Holds the buffer for processing.
+    """
     file_name: str
     sizeInBytes: str
     buffer: str
@@ -19,14 +18,12 @@ class AudioBufferInMemory:
         self.user_id = user_id
 
 
-'''File Handler:
-    -   Handles the uploaded file to server 
-    -   Perform basic sanity checks 
-    -   Keeps the audio clips in memory 
-'''
-
-
-def handle_file(file: UploadedFile, user_id: int) -> bool:
+def handle_file(file: UploadedFile, user_id: str) -> bool:
+    """File Handler:
+        -   Handles the uploaded file to AI server
+        -   Perform basic sanity checks
+        -   Keeps the audio clips in memory
+    """
     result: bool = False
     buffer = file.read()
     if buffer is not None:
