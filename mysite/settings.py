@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
+import tempfile
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,8 +88,8 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'postgres',
-       'USER': 'postgres',
+       'NAME': 'callzone',
+       'USER': 'yashhayaran',
        'PASSWORD': '',
        'HOST': 'localhost',
        'PORT': '5433',
@@ -143,4 +144,12 @@ LOGOUT_REDIRECT_URL = '/login'
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
-FILE_UPLOAD_TEMP_DIR = os.path.join(BASE_DIR, 'tmp')
+BASE_TMP = os.path.join(BASE_DIR, 'tmp')
+if not os.path.exists(BASE_TMP):
+    os.mkdir(BASE_TMP)
+
+tmp_dir = tempfile.TemporaryDirectory(prefix='django_tmp_dir_', dir=os.path.join(BASE_DIR, 'tmp'))
+
+FILE_UPLOAD_TEMP_DIR = tmp_dir.name
+
+AUTH_USER_MODEL = 'main.UserBase'

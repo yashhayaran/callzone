@@ -1,6 +1,7 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils import timezone
+from main.models import UserBase
 
 class PayloadStatus(models.IntegerChoices):
     SUCCESS_TRANSCRIBE = 1
@@ -40,8 +41,8 @@ class PayloadInfo(models.Model):
     )
     
     owner = models.ForeignKey(
-        to=User,
-        verbose_name=("User"), 
+        to=UserBase,
+        verbose_name=("Owner"),
         on_delete=models.CASCADE
     )
     
@@ -57,8 +58,7 @@ class PayloadInfo(models.Model):
     )
 
     status = models.IntegerField(
-        "StatusCode", 
-        max_length=2,
+        "StatusCode",
         choices=PayloadStatus.choices, 
         default=PayloadStatus.ERROR_UNKNOWN
     )
@@ -69,7 +69,7 @@ class PayloadInfo(models.Model):
         max_length=256
     )
 
-    transcibe = models.CharField(
+    transcribe = models.CharField(
         "Transcribe",
         blank=True,
         max_length=2048
