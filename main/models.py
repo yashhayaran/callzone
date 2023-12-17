@@ -1,12 +1,8 @@
 import uuid
-
+from common.models import uuid_generator
 from django.contrib.admin.models import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-
-
-def uuid_generator():
-    return uuid.uuid4().hex
 
 
 class UserBase(AbstractUser):

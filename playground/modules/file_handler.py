@@ -1,4 +1,4 @@
-from django.core.files.uploadedfile import UploadedFile
+from django.core.files.uploadedfile import UploadedFile, InMemoryUploadedFile
 
 
 class AudioBufferInMemory:

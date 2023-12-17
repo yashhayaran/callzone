@@ -16,11 +16,11 @@ Including another URLconf
 """
 from django.urls import path
 
-from . import views
+from . import views, api
 
 app_name = 'playground'
 
 urlpatterns = [
     path('', views.playground_main, name='main'),
-    path('upload_file/', views.upload_file, name='upload_file')
+    path('upload_file', api.upload_file, name='upload_file')
 ]
