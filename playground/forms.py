@@ -52,7 +52,8 @@ class AudioFileUploadForm(forms.Form):
     audio_file = ContentTypeRestrictedFileField(
         content_types=['audio/mpeg'],
         max_upload_size=5242880,
-        label='audio_file'
+        label='audio_file',
+        widget=forms.FileInput(attrs={'accept': 'audio/aac,audio/mpeg,audio/wav,audio/webm,audio/x-flac,audio/flac'})
     )
 
     class Meta:

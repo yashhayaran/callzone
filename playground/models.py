@@ -1,7 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+
+from common.models import uuid_generator
 from main.models import UserBase
+
+from django.utils.translation import gettext_lazy as _
+
 
 class PayloadStatus(models.IntegerChoices):
     SUCCESS_TRANSCRIBE = 1
@@ -14,14 +19,16 @@ class PayloadStatus(models.IntegerChoices):
     FAIL_NO_TRANSCRIBE = 8
 
 
-""" Represents payload info:
-        audio_file_name 
+class PayloadInfo(models.Model):
+    """
+    Represents payload info:
+        audio_file_name
             -   user requests to process the audio file
-                we usally keep that "in-memory" for privacy purpose 
-                just save the filename for user's reference    
-        status 
-            -   processing status of the file 
-                SUCCESS_TRANSCRIBE 
+                we usally keep that "in-memory" for privacy purpose
+                just save the filename for user's reference
+        status
+            -   processing status of the file
+                SUCCESS_TRANSCRIBE
                 ERROR_UPLOAD_SERVER
                 ERROR_INVALID_FILE_FORMAT
                 ERROR_MAX_SIZE_REACHED
@@ -31,46 +38,44 @@ class PayloadStatus(models.IntegerChoices):
         message
             -   message in case of error
         transcribe
-            -   transcribe results for user 
-"""
-class PayloadInfo(models.Model):
-    payload_id = models.BigAutoField(
-        unique=True, 
-        name=("PayloadUniqueID"),
-        primary_key=True
+            -   transcribe results for user
+    """
+    id = models.TextField(
+        _("PayloadUniqueID"),
+        primary_key=True,
+        default=uuid_generator
     )
-    
+
     owner = models.ForeignKey(
         to=UserBase,
-        verbose_name=("Owner"),
         on_delete=models.CASCADE
     )
-    
-    audio_file_name = models.CharField(
-        max_length=128, 
-        null=False, 
+
+    audio_file_name = models.TextField(
+        _("FileName"),
+        max_length=128,
         blank=False
     )
-    
+
     uploaded_at = models.DateTimeField(
-        "UploadedAt",
+        _("UploadedAt"),
         default=timezone.now
     )
 
     status = models.IntegerField(
-        "StatusCode",
-        choices=PayloadStatus.choices, 
+        _("StatusCode"),
+        choices=PayloadStatus.choices,
         default=PayloadStatus.ERROR_UNKNOWN
     )
 
     message = models.CharField(
-        "Message",
+        _("Message"),
         blank=True,
         max_length=256
     )
 
     transcribe = models.CharField(
-        "Transcribe",
+        _("Transcribe"),
         blank=True,
         max_length=2048
     )

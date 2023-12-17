@@ -1,10 +1,11 @@
-body{
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #000;
-    color:#cccccc;
+    color: #cccccc;
 }
 
-.username, .password{
+.username,
+.password {
     padding: 5px;
 }
 
@@ -23,30 +24,61 @@ body{
     padding: 3px;
 }
 
-.drop-zone {
-    height: 200px;
-    padding: 25px;
+.add-sign-box {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    padding: 20%;
+}
+
+.add-sign {
+    width: 75px;
+    height: 75px;
+    font-size: 50px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #00ffd5, #ff00c8, #9b0101);
+}
+
+.upload-message-style {
+    position: relative;
+    font-size: medium;
+    background-color: #cccccc;
+    color: #000;
+    border-radius: 5px;
+    user-select: none;
+    opacity: 35%;
+}
+
+.error {
+    background-color: #ff0000;
+    opacity: 50%;
+}
+
+.drop-zone {
+    width: 256px;
+    height: auto;
     text-align: center;
-    font-weight: 500;
+    justify-content: center;
+    font-weight: 700;
     font-size: 20px;
     cursor: pointer;
     color: #cccccc;
-    border: 4px dashed #18a17c;
+    background-color: #111;
+    border: 2px dashed #18a17c;
     border-radius: 12px;
-  }
-  
-  .drop-zone--over {
+    padding: 5%;
+    font-family: "JetBrains Mono Regular", Menlo, Consolas, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif;
+}
+
+.drop-zone--over {
     border-style: solid;
-  }
-  
-  .drop-zone__input {
+}
+
+.drop-zone__input {
     display: none;
-  }
-  
-  .drop-zone__thumb {
+}
+
+.drop-zone__thumb {
     width: 100%;
     height: 100%;
     border-radius: 10px;
@@ -54,9 +86,9 @@ body{
     background-color: #cccccc;
     background-size: cover;
     position: relative;
-  }
-  
-  .drop-zone__thumb::after {
+}
+
+.drop-zone__thumb::after {
     content: attr(data-label);
     position: absolute;
     bottom: 0;
@@ -67,7 +99,7 @@ body{
     background: rgba(0, 0, 0, 0.75);
     font-size: 14px;
     text-align: center;
-  }
+}
 
 .glow-on-hover {
     width: 220px;
@@ -81,6 +113,16 @@ body{
     z-index: 0;
     border-radius: 10px;
     margin-top: 25px;
+    cursor: hand;
+    font-weight: bolder;
+    font-family: "JetBrains Mono Regular", Menlo, Consolas, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif;
+}
+
+button:disabled,
+button[disabled] {
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
 }
 
 .glow-on-hover:before {
@@ -88,7 +130,7 @@ body{
     background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
     position: absolute;
     top: -2px;
-    left:-2px;
+    left: -2px;
     background-size: 400%;
     z-index: -1;
     filter: blur(5px);
@@ -111,6 +153,7 @@ body{
     display: flex;
     justify-content: space-between;
 }
+
 .glow-on-hover:active {
     color: #000
 }
@@ -136,21 +179,122 @@ body{
 }
 
 @keyframes glowing {
-    0% { background-position: 0 0; }
-    50% { background-position: 400% 0; }
-    100% { background-position: 0 0; }
+    0% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 400% 0;
+    }
+
+    100% {
+        background-position: 0 0;
+    }
 }
 
-.login-bg{
+.login-bg {
     background-color: #cccccc;
     border-radius: 10px;
     padding: 1%;
     margin-top: 1%;
     margin-left: 10%;
     margin-right: 10%;
-    color:#1d1d1d;
-}  
+    color: #1d1d1d;
+}
 
-.login-bg::marker{
-    color:#cccccc;
+.login-bg::marker {
+    color: #cccccc;
+}
+
+
+#result-data-table-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+}
+
+
+.container {
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: "JetBrains Mono Regular", Menlo, Consolas, Monaco, "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New", monospace, serif;
+}
+
+.responsive-table {
+    li {
+        border-radius: 5px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+    }
+
+    .table-header {
+        background-image: linear-gradient(to left, #002bff, #55109a);
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+    }
+
+    .table-row {
+        background-color: #a7a7a7;
+        color: #000;
+    }
+
+    .col-1 {
+        flex-basis: 10%;
+    }
+
+    .col-2 {
+        flex-basis: 40%;
+    }
+
+    .col-3 {
+        flex-basis: 25%;
+    }
+
+    .col-4 {
+        flex-basis: 25%;
+    }
+
+    @media all and (max-width: 767px) {
+        .table-header {
+            display: none;
+        }
+
+        .table-row {}
+
+        li {
+            display: block;
+        }
+
+        .col {
+            flex-basis: 100%;
+        }
+
+        .col {
+            display: flex;
+            padding: 10px 0;
+
+            &:before {
+                color: #6C7A89;
+                padding-right: 10px;
+                content: attr(data-label);
+                flex-basis: 50%;
+                text-align: right;
+            }
+        }
+    }
+}
+
+.noresult {
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+    opacity: 50%;
+    font-weight: bolder;
 }

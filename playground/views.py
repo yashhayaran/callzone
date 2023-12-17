@@ -8,7 +8,8 @@ from .modules.file_handler import handle_file
 
 @login_required(login_url='/login')
 def playground_main(request):
-    """Method to render the main page view to user
+    """
+    Method to render the main page view to user
     """
     form = AudioFileUploadForm()
     return render(
@@ -20,11 +21,12 @@ def playground_main(request):
     )
 
 
+"""
 @login_required(login_url='/login')
 def upload_file(request):
-    file_uploaded = False
-    upload_status = False
-    error = ''
+    file_submitted: bool = False
+    upload_status: bool = False
+    error: str = ""
     form = AudioFileUploadForm()
 
     try:
@@ -37,11 +39,10 @@ def upload_file(request):
                 file = form.cleaned_data.get('audio_file')
                 if file is not None and user_id is not None:
                     handle_file(file, user_id)
+            else:
+                error: list = form.errors.get('audio_file')
+                print(error.pop())
 
-
-    except ValidationError as ve:
-        x = ve
-        y = ve
     except Exception as ex:
         x = ex
         y = ex
@@ -56,3 +57,5 @@ def upload_file(request):
                 'error_message': error
             }
         )
+        
+"""

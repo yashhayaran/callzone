@@ -1,4 +1,11 @@
 {% extends 'common/base.html'%}
+
+{% block scripts %}
+{% load static %}
+<script src="{% static 'playground/utils_script.js' %}"></script>
+<script src="{% static 'playground/render_script.js' %}" ></script>
+{% endblock %}
+
 {% block title %}Playground{% endblock %}
 {% block content%}
 <div class="playground-view-outer">
@@ -6,20 +13,37 @@
         <h1>
             Try out!
         </h1>
-        <form method="post" enctype="multipart/form-data" action="{% url 'playground:upload_file' %}">
+        <form   
+            method="post" 
+            enctype="multipart/form-data"
+            id="upload-file-form">
+
             {% csrf_token %}
             <div class="drop-zone">
-                <div class="drop-zone__prompt">
-                    <p>Drop audio clip here</p>
-                    <p>or click to upload</p>
+                <div class="add-sign-box">
+                    <div class="add-sign">
+                        +
+                    </div>
                 </div>
-                {% load widget_tweaks %}
-                {{ form.audio_file | add_class:"drop-zone__input" }}
+                <div id="upload-message" class="upload-message-style">
+                    Chose a file
+                </div>    
+                <input  type="file" 
+                        class="drop-zone__input" 
+                        id="audio_file_input" 
+                        accept="audio/aac,audio/mpeg,audio/wav,audio/webm,audio/x-flac,audio/flac"
+                        multiple="false" >
             </div>
-            <button type="submit" class="glow-on-hover" value="Upload">
+            <button disabled 
+                    type="submit" 
+                    class="glow-on-hover" 
+                    value="Upload" 
+                    id="upload-button">
                 Upload
             </button>
         </form>
+
+        <!--
         {% if file_submitted %}
             {% if upload_success %}
             <div class="header-main">
@@ -31,8 +55,42 @@
             </div>
             {% endif %}
         {% endif %}
-        {% load static %}
-        <script src="{% static 'common/script.js' %}"></script>
+        -->
+        
+        
     </div>
 </div>
+<div id="result-data-table-area">
+    <div class="container">
+        <ul class="responsive-table">
+          <li class="table-header">
+            <div class="col col-1">Job ID</div>
+            <div class="col col-2">File Name</div>
+            <div class="col col-3">Status</div>
+            <div class="col col-4">Transcribe</div>
+          </li>
+          <li class="noresult table-row">
+            <div class="noresult col">No result found!</div>
+          </li>
+          <li class="table-row">
+            <div class="col col-1" data-label="Job Id">42442</div>
+            <div class="col col-2" data-label="Customer Name">Jennifer Smith</div>
+            <div class="col col-3" data-label="Amount">$220</div>
+            <div class="col col-4" data-label="Payment Status">Pending</div>
+          </li>
+          
+          <!--
+          <li class="table-row">
+            <div class="col col-1" data-label="Job Id">42442</div>
+            <div class="col col-2" data-label="Customer Name">Jennifer Smith</div>
+            <div class="col col-3" data-label="Amount">$220</div>
+            <div class="col col-4" data-label="Payment Status">Pending</div>
+          </li>
+          -->
+        </ul>
+      </div>
+</div>
+{% load static %}
+<script src="{% static 'playground/utils_script.js' %}"></script>
+<script src="{% static 'playground/render_script.js' %}" ></script>
 {% endblock %}
