@@ -3,36 +3,33 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from playground.forms import AudioFileUploadForm, ContentTypeRestrictedFileField
-from playground.modules.file_handler import handle_file
 
 
 @login_required()
 def upload_file(request):
     """
-    We expect an audio file being uploaded by user.
-    Audio file being validated.
-    If passes:
-        - Handles the audio file to Handler
-    Else:
-        - Returns an error log to user
+    USER uploaded a client validated audio file to server via api
+    '/playground/upload_file/'
+
+    Create dummy AudioFileUploadForm object with input files to re-validate again by server again by use of
+    AudioFileUploadForm class.
+
     """
     try:
+        is_valid = False
         error: str = ""
-        # Uses this form as a placeholder
-        form = AudioFileUploadForm()
         if request.method == 'POST':
             user_id = request.user.id
-            file_submitted = True
-            # Try to validate the form here
             form = AudioFileUploadForm(request.POST, request.FILES)
             if form.is_valid():
                 file = form.cleaned_data.get('audio_file')
                 if file is not None and user_id is not None:
-                    handle_file(file, user_id)
             else:
                 error: list = form.errors
                 print(error.pop())
 
+        if is_valid:
+            file_handler.handle_file(file, user_id)
     except Exception as ex:
         error = str(ex)
 
