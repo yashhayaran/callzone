@@ -1,8 +1,14 @@
+import copy
+
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
 
 from playground.forms import AudioFileUploadForm, ContentTypeRestrictedFileField
+from playground.modules.payload_manager import PayloadManager
+from playground.modules.upload_reponse import UploadResponse
+
+__manager = PayloadManager()
 
 
 @login_required()
@@ -15,30 +21,43 @@ def upload_file(request):
     AudioFileUploadForm class.
 
     """
+    current_user = None
+    audio_file = None
+    is_valid_file = False
+    response_json = UploadResponse()
     try:
-        is_valid = False
-        error: str = ""
         if request.method == 'POST':
-            user_id = request.user.id
+            current_user = copy.deepcopy(request.user)
             form = AudioFileUploadForm(request.POST, request.FILES)
             if form.is_valid():
-                file = form.cleaned_data.get('audio_file')
-                if file is not None and user_id is not None:
+                audio_file = form.cleaned_data.get('audio_file')
+                if audio_file is not None:
+                    if current_user is not None:
+                        is_valid_file = True
+                    else:
+                        response_json.errors_list.append("User is invalid to perform this action")
+                else:
+                    response_json.errors_list.append("Uploaded file is invalid or upload failure has occurred")
             else:
-                error: list = form.errors
-                print(error.pop())
+                response_json.errors_list.append(form.errors)
 
-        if is_valid:
-            file_handler.handle_file(file, user_id)
+        if is_valid_file:
+            __manager.add_payload(
+                current_user,
+                audio_file,
+                response_json
+            )
+
     except Exception as ex:
-        error = str(ex)
+        response_json.errors_list.append(str(ex))
 
-    response = {
-        "results": {
-            "file-uploaded": True
-        },
-        "errors": [
-            error
-        ]
-    }
-    return JsonResponse(data=response)
+    finally:
+        response = {
+            "results": {
+                "file-uploaded": True
+            },
+            "errors": [
+                error
+            ]
+        }
+        return JsonResponse(data=response_json)

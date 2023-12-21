@@ -7,6 +7,36 @@ from main.models import UserBase
 
 from django.utils.translation import gettext_lazy as _
 
+import json
+
+
+class PayloadRequestResponse:
+    """
+    Structure the response being made to client
+    """
+    is_invalid_file: bool
+    errors_list: list
+    upload_success: bool
+    is_queued: bool
+
+    def __init__(self,
+                 is_invalid_file=True,
+                 upload_success=False,
+                 is_queued=False):
+        self.is_invalid_file = is_invalid_file
+        self.errors_list.append("Unknown server-side error")
+        self.upload_success = upload_success
+        self.is_queued = is_queued
+
+    def __str__(self):
+        result: str = "{}"
+        try:
+            result = json.dumps(self, default=lambda o: o.__dict__)
+        except Exception as ex:
+            result = "{exception:" + str(ex) + "}"
+        finally:
+            return result
+
 
 class PayloadStatus(models.IntegerChoices):
     SUCCESS_TRANSCRIBE = 1
@@ -47,6 +77,7 @@ class PayloadInfo(models.Model):
     )
 
     owner = models.ForeignKey(
+        _("Owner"),
         to=UserBase,
         on_delete=models.CASCADE
     )
@@ -79,3 +110,13 @@ class PayloadInfo(models.Model):
         blank=True,
         max_length=2048
     )
+
+    def get_response(self):
+        """
+        Prepare the response for client’s sake
+        """
+        res = PayloadRequestResponse(
+
+        )
+
+        return res
