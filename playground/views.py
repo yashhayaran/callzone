@@ -3,7 +3,6 @@ from django.contrib.auth.forms import ValidationError
 from django.shortcuts import render
 
 from .forms import AudioFileUploadForm
-from .modules.file_handler import handle_file
 
 
 @login_required(login_url='/login')
@@ -11,51 +10,6 @@ def playground_main(request):
     """
     Method to render the main page view to user
     """
-    form = AudioFileUploadForm()
     return render(
-        request, 'playground/playground.html',
-        {
-            'form': form,
-            'file_uploaded': False
-        }
+        request, 'playground/playground.html'
     )
-
-
-"""
-@login_required(login_url='/login')
-def upload_file(request):
-    file_submitted: bool = False
-    upload_status: bool = False
-    error: str = ""
-    form = AudioFileUploadForm()
-
-    try:
-        if request.method == 'POST':
-            user_id = request.user.id
-            file_submitted = True
-            # Try to validate the form here
-            form = AudioFileUploadForm(request.POST, request.FILES)
-            if form.is_valid():
-                file = form.cleaned_data.get('audio_file')
-                if file is not None and user_id is not None:
-                    handle_file(file, user_id)
-            else:
-                error: list = form.errors.get('audio_file')
-                print(error.pop())
-
-    except Exception as ex:
-        x = ex
-        y = ex
-
-    finally:
-        return render(
-            request, 'playground/playground.html',
-            {
-                'form': form,
-                'file_submitted': file_submitted,
-                'upload_success': upload_status,
-                'error_message': error
-            }
-        )
-        
-"""

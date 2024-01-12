@@ -124,3 +124,27 @@ function uploadFile() {
     });
   }
 }
+
+function collect_user_payloads() {
+  postData("here", "/playground/fetch_user_payloads")
+      .then(success => {
+          showMessage(false, true, "UPLOADED");
+          console.log('result: ', success);
+      })
+      .catch(error => {
+          console.log('request failed', error);
+      })
+      .finally(function finallyHere(e) {
+          console.log(e);
+      });
+}
+
+{
+  let hereButton = document.getElementById("text-button");
+  if (hereButton != null) {
+    hereButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      collect_user_payloads();
+    });
+  }
+}
