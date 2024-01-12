@@ -10,7 +10,6 @@ def playground_main(request):
     """
     Method to render the main page view to user
     """
-    form = AudioFileUploadForm()
     return render(
         request, 'playground/playground.html'
     )

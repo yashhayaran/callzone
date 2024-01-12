@@ -18,8 +18,8 @@ class ContentTypeRestrictedFileField(forms.FileField):
             250MB - 214958080
             500MB - 429916160
     """
-    error_message: str = ""
-    status: PayloadStatus = PayloadStatus.ERROR_UNKNOWN
+    error_message: str = None
+    status: PayloadStatus = PayloadStatus.UNKNOWN
 
     def __init__(self, *args, **kwargs):
         self.content_types = kwargs.pop("content_types")
@@ -31,19 +31,17 @@ class ContentTypeRestrictedFileField(forms.FileField):
         data = super(ContentTypeRestrictedFileField, self).clean(*args, **kwargs)
 
         # mark the status as success
-        self.status = PayloadStatus.SUCCESS_UPLOAD
+        self.status = PayloadStatus.UPLOADED
 
         if data.content_type in self.content_types:
             if data.size > self.max_upload_size:
-                self.error_message = (f'Please keep filesize under {filesizeformat(self.max_upload_size)}. Current '
-                                      f'filesize {filesizeformat(data.size)}')
-                self.status = PayloadStatus.ERROR_MAX_SIZE_REACHED
+                self.error_message = (f'Please keep file-size under {filesizeformat(self.max_upload_size)}. Current '
+                                      f'file-size {filesizeformat(data.size)}')
         else:
             self.error_message = 'File format is invalid, only MPEG-3 (.mp3) is supported.'
-            self.status = PayloadStatus.ERROR_INVALID_FILE_FORMAT
 
-        if self.status is not PayloadStatus.SUCCESS_UPLOAD:
-            raise forms.ValidationError(f"Error: {self.status}, Message: {self.error_message}")
+        if self.error_message is not None:
+            raise forms.ValidationError(f"{self.error_message}")
 
         return data
 

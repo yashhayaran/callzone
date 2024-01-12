@@ -22,5 +22,6 @@ app_name = 'playground'
 
 urlpatterns = [
     path('', views.playground_main, name='main'),
-    path('upload_file', api.upload_file, name='upload_file')
+    path('upload_file', api.upload_file, name='upload_file'),
+    path('fetch_user_payloads', api.fetch_user_payloads, name='fetch_user_payloads')
 ]
